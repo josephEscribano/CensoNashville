@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="800.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.clientecenso.gui.controllers.FXMLNacimientosController">
+   <children>
+      <ListView fx:id="listHombres" layoutX="43.0" layoutY="84.0" prefHeight="316.0" prefWidth="345.0" />
+      <ListView fx:id="listMujeres" layoutX="43.0" layoutY="451.0" prefHeight="316.0" prefWidth="345.0" />
+      <Label layoutX="43.0" layoutY="67.0" prefHeight="17.0" prefWidth="85.0" text="Lista Hombres" />
+      <Label layoutX="43.0" layoutY="434.0" prefHeight="17.0" prefWidth="85.0" text="Lista Mujeres" />
+      <Button layoutX="492.0" layoutY="249.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="170.0" text="Nacimiento" />
+      <TextField fx:id="tfNombre" layoutX="492.0" layoutY="95.0" prefHeight="25.0" prefWidth="170.0" />
+      <ComboBox fx:id="cbSexo" layoutX="492.0" layoutY="164.0" prefHeight="25.0" prefWidth="170.0" />
+      <Label layoutX="492.0" layoutY="147.0" text="Sexo" />
+      <Label layoutX="492.0" layoutY="76.0" text="Nombre" />
+   </children>
+</AnchorPane>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.text.Font?>
+<BorderPane fx:id="fxRoot" xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="org.example.clientecenso.gui.controllers.FXMLPrincipalController"
+            prefHeight="400.0" prefWidth="600.0">
+
+    <top>
+        <MenuBar>
+            <Menu text="Personas">
+                <items>
+                    <MenuItem  onAction="#chargeLllegada" text="Personas Nuevas" />
+                    <MenuItem  onAction="#chargeNacimiento" text="Nacimientos" />
+                    <MenuItem  onAction="#chargeDefunciones" text="Defunciones" />
+                    <MenuItem  onAction="#chargeCasamiento" text="Casamientos" />
+                </items>
+            </Menu>
+        </MenuBar>
+    </top>
+
+    <center>
+        <Label layoutX="172.0" layoutY="116.0" text="Welcome to my Nashville " textFill="#000000a1">
+            <font>
+                <Font size="36.0" />
+            </font>
+        </Label>
+    </center>
+</BorderPane>

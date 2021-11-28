@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="800.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.clientecenso.gui.controllers.FXMLLlegadasController">
+   <children>
+      <ListView fx:id="listPersonas" layoutX="27.0" layoutY="45.0" prefHeight="515.0" prefWidth="467.0" />
+      <TextField fx:id="tfNombre" layoutX="545.0" layoutY="76.0" prefHeight="25.0" prefWidth="172.0" />
+      <Label layoutX="545.0" layoutY="59.0" text="Nombre" />
+      <ComboBox fx:id="cbEcivil" layoutX="546.0" layoutY="142.0" prefHeight="25.0" prefWidth="172.0" />
+      <ComboBox fx:id="cbSexo" layoutX="545.0" layoutY="211.0" prefHeight="25.0" prefWidth="172.0" />
+      <DatePicker fx:id="dpNacimiento" layoutX="547.0" layoutY="278.0" prefHeight="25.0" prefWidth="172.0" />
+      <Label layoutX="547.0" layoutY="125.0" text="Estado Civil" />
+      <Label layoutX="547.0" layoutY="194.0" text="Sexo" />
+      <Label layoutX="547.0" layoutY="261.0" text="Fecha de Nacimiento" />
+      <TextField fx:id="tfProcedencia" layoutX="549.0" layoutY="349.0" prefHeight="25.0" prefWidth="172.0" />
+      <Label layoutX="551.0" layoutY="332.0" text="Lugar de Procedencia" />
+      <Button layoutX="42.0" layoutY="641.0" onAction="#insertPersona" mnemonicParsing="false" prefHeight="25.0" prefWidth="106.0" text="Añadir" />
+      <Button layoutX="222.0" layoutY="641.0" onAction="#deletePersona" mnemonicParsing="false" prefHeight="25.0" prefWidth="106.0" text="Borrar" />
+      <Button layoutX="424.0" layoutY="641.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="106.0" text="Actualizar" />
+      <Button layoutX="606.0" layoutY="641.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="106.0" text="Filtrar" />
+   </children>
+</AnchorPane>

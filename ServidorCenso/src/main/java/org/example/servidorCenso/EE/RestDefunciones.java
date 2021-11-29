@@ -7,8 +7,8 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.example.common.errores.ApiError;
-import org.example.servidorCenso.EE.utils.ConstantesRest;
 import org.example.common.modelos.ApiRespuesta;
+import org.example.servidorCenso.EE.utils.ConstantesRest;
 import org.example.servidorCenso.service.DefuncionesService;
 
 @Path(ConstantesRest.PATH_DEFUNCIONES)
@@ -36,7 +36,7 @@ public class RestDefunciones {
                     .build();
 
         } else {
-            response = Response.status(Response.Status.OK)
+            response = Response.status(Response.Status.NOT_FOUND)
                     .entity(resultado.getLeft())
                     .build();
         }

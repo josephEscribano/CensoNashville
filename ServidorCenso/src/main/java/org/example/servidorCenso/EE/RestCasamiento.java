@@ -6,8 +6,8 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.example.common.errores.ApiError;
-import org.example.servidorCenso.EE.utils.ConstantesRest;
 import org.example.common.modelos.ApiRespuesta;
+import org.example.servidorCenso.EE.utils.ConstantesRest;
 import org.example.servidorCenso.service.CasamientoService;
 
 

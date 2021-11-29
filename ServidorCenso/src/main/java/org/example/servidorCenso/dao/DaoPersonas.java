@@ -2,16 +2,13 @@ package org.example.servidorCenso.dao;
 
 import io.vavr.control.Either;
 import org.example.common.errores.ApiError;
-import org.example.common.modelos.EstadoCivil;
-import org.example.common.modelos.Persona;
-import org.example.common.modelos.RelacionPadreHijo;
-import org.example.common.modelos.Sexo;
+import org.example.common.modelos.*;
 import org.example.servidorCenso.EE.utils.ConstantesRest;
-import org.example.common.modelos.ApiRespuesta;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 public class DaoPersonas {
@@ -19,10 +16,10 @@ public class DaoPersonas {
 
     static {
 
-        Persona hijo1 = new Persona(3, "Roberto", Sexo.HOMBRE, LocalDate.of(2000, 8, 14), "Madrid");
-        Persona hijo2 = new Persona(4, "Maria", Sexo.MUJER, LocalDate.of(2010, 10, 20), "Madrid");
-        Persona hijo3 = new Persona(7, "Paco", Sexo.HOMBRE, LocalDate.of(1995, 8, 14), "Barcelona");
-        Persona hijo4 = new Persona(9, "Laura", Sexo.MUJER, LocalDate.of(1998, 10, 20), "Barcelona");
+        Persona hijo1 = new Persona(3, "Roberto", Sexo.HOMBRE, LocalDate.of(2000, 8, 14), "Nashville");
+        Persona hijo2 = new Persona(4, "Maria", Sexo.MUJER, LocalDate.of(2010, 10, 20), "Nashville");
+        Persona hijo3 = new Persona(7, "Paco", Sexo.HOMBRE, LocalDate.of(1995, 8, 14), "Nashville");
+        Persona hijo4 = new Persona(9, "Laura", Sexo.MUJER, LocalDate.of(1998, 10, 20), "Nashville");
         //Añadir hijos a la lista de personas
         personas.add(hijo1);
         personas.add(hijo2);
@@ -52,7 +49,7 @@ public class DaoPersonas {
         personas.add(new Persona(6, "Sara", EstadoCivil.CASADO, Sexo.MUJER, LocalDate.of(1973, 12, 26), "Barcelona", 5, hijos4));
 
         personas.add(new Persona(10, "Mario", EstadoCivil.SOLTERO, Sexo.HOMBRE, LocalDate.of(2003, 8, 25), "Madrid"));
-        personas.add(new Persona(11, "Diana", EstadoCivil.SOLTERO, Sexo.HOMBRE, LocalDate.of(1990, 8, 25), "Sevilla"));
+        personas.add(new Persona(11, "Diana", EstadoCivil.SOLTERO, Sexo.MUJER, LocalDate.of(1990, 8, 25), "Sevilla"));
     }
 
     public Either<ApiError, List<Persona>> getAll() {
@@ -78,6 +75,7 @@ public class DaoPersonas {
             }
 
             personas.add(persona);
+            persona.setIdPersonaCasada(0);
             persona.setHijos(new ArrayList<>());
             confirmacion = true;
         }
@@ -95,6 +93,7 @@ public class DaoPersonas {
         }
 
         personas.add(persona);
+        persona.setIdPersonaCasada(0);
         persona.setEstadoCivil(null);
         persona.setHijos(new ArrayList<>());
 
@@ -108,15 +107,15 @@ public class DaoPersonas {
         int contador = 0;
         if (persona != null) {
             boolean hijo = false;
-            for (Persona persona1: personas) {
-                for (RelacionPadreHijo relacionPadreHijo: persona1.getHijos()) {
-                    if (relacionPadreHijo.getIdhijo() == id){
+            for (Persona persona1 : personas) {
+                for (RelacionPadreHijo relacionPadreHijo : persona1.getHijos()) {
+                    if (relacionPadreHijo.getIdhijo() == id) {
                         hijo = true;
                     }
                 }
             }
             // si es false es que no es hijo de nadie y entro para que pueda hacer las comprobaciones
-            if (!hijo){
+            if (!hijo) {
                 if (!persona.getHijos().isEmpty()) {
                     for (RelacionPadreHijo relacionPadreHijo : persona.getHijos()) {
                         personas.removeIf(persona3 -> persona3.getId() == relacionPadreHijo.getIdhijo());
@@ -132,8 +131,8 @@ public class DaoPersonas {
                     contador++;
                 }
                 resultado = Either.right(new ApiRespuesta(ConstantesDao.PERSONAS_BORRADA + contador));
-            }else{
-                resultado = Either.left(new ApiError(ConstantesDao.NO_PUEDES_BORRAR_UN_HIJO,LocalDate.now()));
+            } else {
+                resultado = Either.left(new ApiError(ConstantesDao.NO_PUEDES_BORRAR_UN_HIJO, LocalDate.now()));
             }
         } else {
             resultado = Either.left(new ApiError(ConstantesDao.LA_PERSONA_NO_EXISTE, LocalDate.now()));
@@ -175,6 +174,37 @@ public class DaoPersonas {
         return resultado;
     }
 
+    public void exiliarPersona(Persona persona) {
+        AtomicBoolean tieneMujer = new AtomicBoolean(false);
+        if (persona.getEstadoCivil() == EstadoCivil.CASADO) {
+            personas.forEach(persona1 -> {
+                if (persona1.getId() == persona.getIdPersonaCasada()) {
+                    persona1.setIdPersonaCasada(0);
+                    tieneMujer.set(true);
+                }
+            });
+            if (!tieneMujer.get() || persona.getIdPersonaCasada() == 0) {
+                if (!persona.getHijos().isEmpty()) {
+                    for (RelacionPadreHijo relacionPadreHijo : persona.getHijos()) {
+                        personas.forEach(persona1 -> {
+                            if (persona1.getId() == relacionPadreHijo.getIdhijo()) {
+                                persona1.setEstadoCivil(EstadoCivil.SOLTERO);
+                            }
+                        });
+                    }
+                    personas.remove(persona);
+                } else {
+                    personas.remove(persona);
+                }
+            }
+            personas.remove(persona);
+        } else {
+            personas.remove(persona);
+        }
+
+
+    }
+
     public Either<ApiError, ApiRespuesta> naceHijo(int idpadre, int idmadre, Persona persona) {
         Either<ApiError, ApiRespuesta> resultado;
         Persona padre = personas.stream().filter(persona1 -> persona1.getId() == idpadre).findFirst().orElse(null);
@@ -182,20 +212,34 @@ public class DaoPersonas {
         Persona madre = personas.stream().filter(persona2 -> persona2.getId() == idmadre).findFirst().orElse(null);
 
         if (padre != null && madre != null) {
-            if (padre.getEstadoCivil() != EstadoCivil.SOLTERO && madre.getEstadoCivil() != EstadoCivil.SOLTERO) {
-                if (padre.getIdPersonaCasada() == madre.getId() && madre.getIdPersonaCasada() == padre.getId()) {
-                    insertHijos(persona);
-                    personas.get(personas.indexOf(padre)).getHijos().add(new RelacionPadreHijo(personas.get(personas.size() - 1).getId()));
-                    personas.get(personas.indexOf(madre)).getHijos().add(new RelacionPadreHijo(personas.get(personas.size() - 1).getId()));
+            boolean hijo = false;
+            for (Persona persona1 : personas) {
+                for (RelacionPadreHijo relacionPadreHijo : persona1.getHijos()) {
+                    if (relacionPadreHijo.getIdhijo() == idpadre || relacionPadreHijo.getIdhijo() == idmadre) {
+                        hijo = true;
+                    }
+                }
+            }
+            if (!hijo) {
+                if (padre.getEstadoCivil() != EstadoCivil.SOLTERO && madre.getEstadoCivil() != EstadoCivil.SOLTERO) {
+                    if (padre.getIdPersonaCasada() == madre.getId() && madre.getIdPersonaCasada() == padre.getId()) {
+                        insertHijos(persona);
+                        personas.get(personas.indexOf(padre)).getHijos().add(new RelacionPadreHijo(personas.get(personas.size() - 1).getId()));
+                        personas.get(personas.indexOf(madre)).getHijos().add(new RelacionPadreHijo(personas.get(personas.size() - 1).getId()));
 
-                    resultado = Either.right(new ApiRespuesta(ConstantesDao.EL_HIJO_HA_SIDO_AÑADIDO));
+                        resultado = Either.right(new ApiRespuesta(ConstantesDao.EL_HIJO_HA_SIDO_AÑADIDO));
+                    } else {
+                        exiliarPersona(padre);
+                        exiliarPersona(madre);
+                        resultado = Either.left(new ApiError(ConstantesDao.LAS_PERSONAS_NO_ESTAN_CASADAS_Y_HAN_SIDO_EXILIADAS, LocalDate.now()));
+                    }
                 } else {
-                    resultado = Either.left(new ApiError(ConstantesDao.NO_PUEDEN_TENER_UN_HIJO_PORQUE_NO_ESTAN_CASADAS, LocalDate.now()));
+                    exiliarPersona(padre);
+                    exiliarPersona(madre);
+                    resultado = Either.left(new ApiError(ConstantesDao.LAS_PERSONAS_NO_ESTAN_CASADAS_Y_HAN_SIDO_EXILIADAS, LocalDate.now()));
                 }
             } else {
-                personas.remove(padre);
-                personas.remove(madre);
-                resultado = Either.left(new ApiError(ConstantesDao.LAS_PERSONAS_NO_ESTAN_CASADAS_Y_HAN_SIDO_EXILIADAS, LocalDate.now()));
+                resultado = Either.left(new ApiError(ConstantesDao.LOS_HIJOS_DE_OTRAS_PERSONAS_NO_PUEDEN_TENER_HIJOS, LocalDate.now()));
             }
         } else {
             resultado = Either.left(new ApiError(ConstantesDao.NO_EXISTEN_ESAS_PERSONAS, LocalDate.now()));
@@ -212,8 +256,16 @@ public class DaoPersonas {
         Persona mujer = personas.stream().filter(persona2 -> persona2.getId() == idmujer).findFirst().orElse(null);
 
         if (hombre != null && mujer != null) {
+            boolean hijo = false;
+            for (Persona persona1 : personas) {
+                for (RelacionPadreHijo relacionPadreHijo : persona1.getHijos()) {
+                    if (relacionPadreHijo.getIdhijo() == idhombre || relacionPadreHijo.getIdhijo() == idmujer) {
+                        hijo = true;
+                    }
+                }
+            }
             if (hombre.getSexo() == Sexo.HOMBRE && mujer.getSexo() == Sexo.MUJER) {
-                if (hombre.getEstadoCivil() != null && mujer.getEstadoCivil() != null) {
+                if (!hijo) {
                     if (hombre.getEstadoCivil() == EstadoCivil.SOLTERO && mujer.getEstadoCivil() == EstadoCivil.SOLTERO) {
                         personas.get(personas.indexOf(hombre)).setEstadoCivil(EstadoCivil.CASADO);
                         personas.get(personas.indexOf(mujer)).setEstadoCivil(EstadoCivil.CASADO);
@@ -240,44 +292,50 @@ public class DaoPersonas {
 
     public Either<ApiError, ApiRespuesta> muerePersona(int id) {
 
-        Either<ApiError, ApiRespuesta> resultado ;
+        Either<ApiError, ApiRespuesta> resultado;
         Persona persona = personas.stream().filter(persona1 -> persona1.getId() == id).findFirst().orElse(null);
 
         if (persona != null) {
             boolean hijo = false;
-            for (Persona persona1: personas) {
-                for (RelacionPadreHijo relacionPadreHijo: persona1.getHijos()) {
-                    if (relacionPadreHijo.getIdhijo() == id){
+            for (Persona persona1 : personas) {
+                for (RelacionPadreHijo relacionPadreHijo : persona1.getHijos()) {
+                    if (relacionPadreHijo.getIdhijo() == id) {
                         hijo = true;
                     }
                 }
             }
             // falso si el id no pertenece al hijo de alguien y si pertence sera verdadero y por tanto no se borrará
-            if (!hijo){
-                if (persona.getEstadoCivil() == EstadoCivil.CASADO) {
+            if (!hijo) {
+                AtomicBoolean tieneMujer = new AtomicBoolean(false);
+                if (persona.getEstadoCivil() == EstadoCivil.CASADO || persona.getEstadoCivil() == EstadoCivil.VIUDO) {
                     personas.forEach(persona1 -> {
                         if (persona1.getId() == persona.getIdPersonaCasada()) {
                             persona1.setIdPersonaCasada(0);
                             persona1.setEstadoCivil(EstadoCivil.VIUDO);
+                            tieneMujer.set(true);
                         }
                     });
-                    if (!persona.getHijos().isEmpty()) {
-                        for (RelacionPadreHijo relacionPadreHijo : persona.getHijos()) {
-                            personas.forEach(persona1 -> {
-                                if (persona1.getId() == relacionPadreHijo.getIdhijo()) {
-                                    persona1.setEstadoCivil(EstadoCivil.SOLTERO);
-                                }
-                            });
+                    if (!tieneMujer.get() || persona.getIdPersonaCasada() == 0) {
+                        if (!persona.getHijos().isEmpty()) {
+                            for (RelacionPadreHijo relacionPadreHijo : persona.getHijos()) {
+                                personas.forEach(persona1 -> {
+                                    if (persona1.getId() == relacionPadreHijo.getIdhijo()) {
+                                        persona1.setEstadoCivil(EstadoCivil.SOLTERO);
+                                    }
+                                });
+                            }
+                            personas.remove(persona);
+                        } else {
+                            personas.remove(persona);
                         }
-                        personas.remove(persona);
-                    } else {
-                        personas.remove(persona);
                     }
+
+                    personas.remove(persona);
                 } else {
                     personas.remove(persona);
                 }
                 resultado = Either.right(new ApiRespuesta(ConstantesDao.LA_PERSONA_HA_MUERTO));
-            }else{
+            } else {
                 resultado = Either.left(new ApiError(ConstantesRest.EL_NIÑO_HA_RESUCITADO, LocalDate.now()));
             }
         } else {

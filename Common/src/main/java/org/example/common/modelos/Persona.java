@@ -74,7 +74,7 @@ public class Persona {
         return "id=" + id +
                 ", nombre='" + nombre + '\n' +
                 ", estadoCivil=" + estadoCivil + '\n' +
-                ", sexo=" + sexo + '\n'+
+                ", sexo=" + sexo + '\n' +
                 ", nacimiento=" + nacimiento + '\n' +
                 ", lugarNacimiento='" + lugarNacimiento + '\n' +
                 ", idPersonaCasada=" + idPersonaCasada + '\n' +

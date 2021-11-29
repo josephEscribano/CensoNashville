@@ -13,7 +13,7 @@ public class CDUJavaFX extends Application {
     }
 
     @Override
-    public void start(Stage stage)  {
+    public void start(Stage stage) {
         SeContainerInitializer initializer = SeContainerInitializer.newInstance();
         final SeContainer container = initializer.initialize();
         stage.setMinWidth(800);

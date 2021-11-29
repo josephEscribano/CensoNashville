@@ -9,7 +9,7 @@
       <ListView fx:id="listMujeres" layoutX="43.0" layoutY="451.0" prefHeight="316.0" prefWidth="345.0" />
       <Label layoutX="43.0" layoutY="67.0" prefHeight="17.0" prefWidth="85.0" text="Lista Hombres" />
       <Label layoutX="43.0" layoutY="434.0" prefHeight="17.0" prefWidth="85.0" text="Lista Mujeres" />
-      <Button layoutX="492.0" layoutY="249.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="170.0" text="Nacimiento" />
+      <Button layoutX="492.0" layoutY="249.0" mnemonicParsing="false" onAction="#nacimiento" prefHeight="29.0" prefWidth="170.0" text="Nacimiento" />
       <TextField fx:id="tfNombre" layoutX="492.0" layoutY="95.0" prefHeight="25.0" prefWidth="170.0" />
       <ComboBox fx:id="cbSexo" layoutX="492.0" layoutY="164.0" prefHeight="25.0" prefWidth="170.0" />
       <Label layoutX="492.0" layoutY="147.0" text="Sexo" />

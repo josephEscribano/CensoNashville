@@ -3,7 +3,6 @@ package org.example.servidorCenso.EE.utils;
 public class ConstantesRest {
     public static final String PATH_ID = "/{id}";
     public static final String ID = "id";
-    public static final String PERSONA_ACTUALIZADA = "Persona actualizada";
     public static final String PERSONA_NO_ENCONTRADA = "Persona no encontrada";
     public static final String IDPADRE = "idpadre";
     public static final String IDMADRE = "idmadre";
@@ -17,8 +16,5 @@ public class ConstantesRest {
     public static final String PATH_API = "api";
     public static final String PATH_CASAMIENTOS = "casamientos";
     public static final String PATH_FILTROS = "filtros";
-    public static final String PARAM_LUGAR = "lugar";
-    public static final String PARAM_NACIMIENTO = "nacimiento";
-    public static final String PARAM_NHIJOS = "nhijos";
-    public static final String PARAM_ECIVIL = "ecivil";
+
 }

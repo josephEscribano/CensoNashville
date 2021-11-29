@@ -6,7 +6,6 @@ module ClienteCenso {
     requires io.vavr;
     requires retrofit2;
     requires okhttp3;
-    requires retrofit2.adapter.rxjava2;
     requires retrofit2.converter.gson;
     requires com.google.gson;
     requires org.apache.logging.log4j;
@@ -30,7 +29,6 @@ module ClienteCenso {
     exports org.example.clientecenso.service;
     exports org.example.clientecenso.config;
     exports org.example.clientecenso.gui.utils;
-//    exports org.example.clientecenso.dao.utils;
     exports org.example.clientecenso.dao.retrofit;
 
 }

@@ -6,16 +6,18 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.example.common.errores.ApiError;
-import org.example.common.modelos.Persona;
-import org.example.servidorCenso.EE.utils.ConstantesRest;
 import org.example.common.modelos.ApiRespuesta;
+import org.example.common.modelos.Persona;
+import org.example.common.utils.ConstantesCommon;
+import org.example.servidorCenso.EE.utils.ConstantesRest;
 import org.example.servidorCenso.service.PersonaService;
 
 import java.time.LocalDate;
 import java.util.List;
 
 @Path(ConstantesRest.PATH_PERSONAS)
-@Produces(MediaType.APPLICATION_JSON)
+@Produces({MediaType.APPLICATION_JSON})
+
 @Consumes(MediaType.APPLICATION_JSON)
 public class RestPersonas {
 
@@ -78,7 +80,7 @@ public class RestPersonas {
         Response response;
         if (personaService.updatePersona(persona)) {
             response = Response.status(Response.Status.CREATED)
-                    .entity(new ApiRespuesta(ConstantesRest.PERSONA_ACTUALIZADA))
+                    .entity(new ApiRespuesta(ConstantesCommon.PERSONA_ACTUALIZADA))
                     .build();
         } else {
             response = Response.status(Response.Status.NOT_FOUND)
@@ -91,10 +93,10 @@ public class RestPersonas {
 
     @GET
     @Path(ConstantesRest.PATH_FILTROS)
-    public Response filtrado(@QueryParam(ConstantesRest.PARAM_LUGAR) String lugar,
-                             @QueryParam(ConstantesRest.PARAM_NACIMIENTO) String nacimiento,
-                             @QueryParam(ConstantesRest.PARAM_NHIJOS) int nhijos,
-                             @QueryParam(ConstantesRest.PARAM_ECIVIL) String ecivil) {
+    public Response filtrado(@QueryParam(ConstantesCommon.PARAM_LUGAR) String lugar,
+                             @QueryParam(ConstantesCommon.PARAM_NACIMIENTO) String nacimiento,
+                             @QueryParam(ConstantesCommon.PARAM_NHIJOS) int nhijos,
+                             @QueryParam(ConstantesCommon.PARAM_ECIVIL) String ecivil) {
         Response response;
         Either<ApiError, List<Persona>> resultado = personaService.filtrado(lugar, nacimiento, nhijos, ecivil);
 
@@ -103,7 +105,7 @@ public class RestPersonas {
                     .entity(resultado.get())
                     .build();
         } else {
-            response = Response.status(Response.Status.OK)
+            response = Response.status(Response.Status.NOT_FOUND)
                     .entity(resultado.getLeft())
                     .build();
         }

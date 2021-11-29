@@ -113,8 +113,10 @@ public class FXMLPrincipalController implements Initializable {
     public void chargeNacimiento() {
         fxmlNacimientosController.loadHombres();
         fxmlNacimientosController.loadMujeres();
+        fxmlNacimientosController.loadSexo();
         fxRoot.setCenter(nacimientos);
     }
+
     public void chargeCasamiento() {
         fxmlCasamientosController.loadHombres();
         fxmlCasamientosController.loadMujeres();

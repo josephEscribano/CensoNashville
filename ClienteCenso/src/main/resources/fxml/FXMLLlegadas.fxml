@@ -5,7 +5,7 @@
 
 <AnchorPane prefHeight="800.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.clientecenso.gui.controllers.FXMLLlegadasController">
    <children>
-      <ListView fx:id="listPersonas" layoutX="27.0" layoutY="45.0" prefHeight="515.0" prefWidth="467.0" />
+      <ListView fx:id="listPersonas" layoutX="27.0" layoutY="45.0" onMousePressed="#showData" prefHeight="515.0" prefWidth="467.0" />
       <TextField fx:id="tfNombre" layoutX="545.0" layoutY="76.0" prefHeight="25.0" prefWidth="172.0" />
       <Label layoutX="545.0" layoutY="59.0" text="Nombre" />
       <ComboBox fx:id="cbEcivil" layoutX="546.0" layoutY="142.0" prefHeight="25.0" prefWidth="172.0" />
@@ -16,9 +16,18 @@
       <Label layoutX="547.0" layoutY="261.0" text="Fecha de Nacimiento" />
       <TextField fx:id="tfProcedencia" layoutX="549.0" layoutY="349.0" prefHeight="25.0" prefWidth="172.0" />
       <Label layoutX="551.0" layoutY="332.0" text="Lugar de Procedencia" />
-      <Button layoutX="42.0" layoutY="641.0" onAction="#insertPersona" mnemonicParsing="false" prefHeight="25.0" prefWidth="106.0" text="Añadir" />
-      <Button layoutX="222.0" layoutY="641.0" onAction="#deletePersona" mnemonicParsing="false" prefHeight="25.0" prefWidth="106.0" text="Borrar" />
-      <Button layoutX="424.0" layoutY="641.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="106.0" text="Actualizar" />
-      <Button layoutX="606.0" layoutY="641.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="106.0" text="Filtrar" />
+      <Button layoutX="42.0" layoutY="641.0" mnemonicParsing="false" onAction="#insertPersona" prefHeight="25.0" prefWidth="106.0" text="Añadir" />
+      <Button layoutX="222.0" layoutY="641.0" mnemonicParsing="false" onAction="#deletePersona" prefHeight="25.0" prefWidth="106.0" text="Borrar" />
+      <Button layoutX="424.0" layoutY="641.0" mnemonicParsing="false" onAction="#updatePersona" prefHeight="25.0" prefWidth="106.0" text="Actualizar" />
+      <Button layoutX="606.0" layoutY="641.0" mnemonicParsing="false" onAction="#filtrado" prefHeight="25.0" prefWidth="106.0" text="Filtrar" />
+      <TextField fx:id="tfNhijos" layoutX="552.0" layoutY="423.0" prefHeight="25.0" prefWidth="172.0" />
+      <Label layoutX="553.0" layoutY="406.0" text="Numero de hijos" />
+      <TextField fx:id="tfFiltroFecha" layoutX="551.0" layoutY="486.0" prefHeight="25.0" prefWidth="172.0" />
+      <Label layoutX="553.0" layoutY="469.0" prefHeight="17.0" prefWidth="61.0" text="Filtro Fecha" />
+      <Label layoutX="619.0" layoutY="469.0" text="(solo filtros)" />
+      <Label layoutX="642.0" layoutY="406.0" text="(solo filtros)" />
+      <Label layoutX="666.0" layoutY="332.0" text="(Actualizar)" />
+      <Label layoutX="666.0" layoutY="261.0" text="(Actualizar)" />
+      <Label layoutX="589.0" layoutY="59.0" text="(Actualizar)" />
    </children>
 </AnchorPane>

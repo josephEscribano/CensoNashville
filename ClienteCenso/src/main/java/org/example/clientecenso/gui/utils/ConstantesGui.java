@@ -9,4 +9,5 @@ public class ConstantesGui {
     public static final String DEBES_SELECCIONAR_UN_HOMBRE_Y_UNA_MUJER = "Debes seleccionar un hombre y una mujer";
     public static final String NASHVILLE = "Nashville";
     public static final String SELECCIONA_PADRE_MADRE = "Tienes que seleccinar un padre y una madre";
+    public static final String PATHBASE = "pathbase";
 }
